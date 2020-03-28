@@ -38,6 +38,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function avatar() {
+        return 'http://www.gravatar.com/avatar/' . md5($this->email) . '?d=mp';
+    }
+
     public function following() {
         return $this->belongsToMany(
             User::class, 'followers', 'user_id', 'following_id'
