@@ -1,5 +1,8 @@
 <template>
     <div>
+        <div class="border-b-8 border-gray-800 p-4 w-full">
+            <app-tweet-compose />
+        </div>
         <app-tweet
             v-for="tweet in tweets"
             :key="tweet.id"
@@ -47,7 +50,6 @@ export default {
 
         handleScrolledToBottomOfTimeline(isVisible) {
             if(isVisible) return
-
             if(this.lastPage === this.page) return;
 
             this.page++
