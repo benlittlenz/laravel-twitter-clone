@@ -8,10 +8,15 @@ use App\Http\Resources\TweetCollection;
 
 class TimelineController extends Controller
 {
+    public function __construct() {
+        $this->middleware(['auth:sanctum']);
+    }
+    
     public function index(Request $request) {
         $tweets = $request->user()
             ->tweetsFromFollowing()
-            ->paginate(9);
+            ->latest()
+            ->paginate(3);
 
 
         return new TweetCollection($tweets);
