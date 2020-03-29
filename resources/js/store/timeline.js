@@ -1,5 +1,7 @@
+import axios from 'axios'
+
 export default {
-    namespace: true,
+    namespaced: true,
 
     state: {
         tweets: []
@@ -10,9 +12,17 @@ export default {
         }
     },
     mutations: {
-
+        PUSH_TWEETS (state, data) {
+            state.tweets.push(...data)
+        }
     },
     actions: {
+        async getTweets({ commit }, url) {
+            let res = await axios.get(url);
 
+            commit('PUSH_TWEETS', res.data.data);
+
+            return res;
+        }
     }
 }
