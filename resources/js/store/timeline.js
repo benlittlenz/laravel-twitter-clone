@@ -9,11 +9,16 @@ export default {
     getters: {
         tweets (state) {
             return state.tweets
+                .sort((a, b) => b.created_at - a.created_at)
         }
     },
     mutations: {
         PUSH_TWEETS (state, data) {
-            state.tweets.push(...data)
+            state.tweets.push(
+            ...data.filter(tweet => {
+                return !state.tweets.map(t => t.id).includes(tweet.id)
+            })
+            )
         }
     },
     actions: {

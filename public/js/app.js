@@ -62104,14 +62104,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   getters: {
     tweets: function tweets(state) {
-      return state.tweets;
+      return state.tweets.sort(function (a, b) {
+        return b.created_at - a.created_at;
+      });
     }
   },
   mutations: {
     PUSH_TWEETS: function PUSH_TWEETS(state, data) {
       var _state$tweets;
 
-      (_state$tweets = state.tweets).push.apply(_state$tweets, _toConsumableArray(data));
+      (_state$tweets = state.tweets).push.apply(_state$tweets, _toConsumableArray(data.filter(function (tweet) {
+        return !state.tweets.map(function (t) {
+          return t.id;
+        }).includes(tweet.id);
+      })));
     }
   },
   actions: {
