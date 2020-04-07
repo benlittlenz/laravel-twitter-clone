@@ -2,14 +2,15 @@
 
 namespace App\Events\Tweets;
 
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
 use App\Tweet;
+use Illuminate\Broadcasting\Channel;
+use App\Http\Resources\TweetResource;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class TweetWasCreated implements ShouldBroadcast
 {
@@ -25,6 +26,10 @@ class TweetWasCreated implements ShouldBroadcast
     public function __construct(Tweet $tweet)
     {
         $this->tweet = $tweet;
+    }
+
+    public function broadcastWith() {
+        return (new TweetResource($this->tweet))->jsonSerialize();
     }
     
 

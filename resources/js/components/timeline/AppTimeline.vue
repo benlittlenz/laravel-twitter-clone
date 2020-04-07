@@ -19,7 +19,7 @@
 </template>
 
 <script>
-    import { mapGetters, mapActions } from 'vuex'
+    import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 export default {
     data() {
@@ -42,6 +42,10 @@ export default {
             getTweets: 'timeline/getTweets'
         }),
 
+        ...mapMutations({
+            PUSH_TWEETS: 'timeline/PUSH_TWEETS'
+        }),
+
         loadTweets () {
             this.getTweets(this.urlWithPage).then(res => {
                 this.lastPage = res.data.meta.last_page
@@ -60,6 +64,11 @@ export default {
 
     mounted() {
         this.loadTweets();
+
+        Echo.private(`timeline.${this.$user.id}`)
+            .listen('.TweetWasCreated', (e) => {
+                this.PUSH_TWEETS([e])
+            })
     }
 }
 
